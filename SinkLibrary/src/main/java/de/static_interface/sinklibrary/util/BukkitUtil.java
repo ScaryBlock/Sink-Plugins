@@ -15,45 +15,21 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.static_interface.sinklibrary;
+package de.static_interface.sinklibrary.util;
 
+import de.static_interface.sinklibrary.SinkLibrary;
+import de.static_interface.sinklibrary.SinkUser;
 import de.static_interface.sinklibrary.sender.IrcCommandSender;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
+import org.spongepowered.api.Game;
+import org.spongepowered.api.entity.Player;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
 
 public class BukkitUtil {
-
-    /** Since Bukkit 1.7.9 R0.3, the return type of {@link org.bukkit.Bukkit#getOnlinePlayers()} changed, so
-     *  plugins will possibly break when using this method on older bukkit versions
-     *
-     * @return the current online players
-     */
-    public static List<Player> getOnlinePlayers() {
-        List<Player> tmp = new ArrayList<>();
-        try {
-            if (Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).getReturnType() == Collection.class) // 1.7.9 R0.3 and newer
-            {
-                tmp = (List<Player>) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null);
-            } else {
-                Collections.addAll(tmp, ((Player[]) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null)));
-            }
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
-        }
-        return tmp;
-    }
-
 
     /**
      * Get online Player by name.
@@ -62,7 +38,7 @@ public class BukkitUtil {
      * @return If more than one matches, it will return the player with exact name.
      */
     @Nullable
-    public static Player getPlayer(String name) {
+    public static Player getPlayer(String name, Game game) {
         List<Player> matchedPlayers = new ArrayList<>();
         for (Player player : BukkitUtil.getOnlinePlayers()) {
             if (player.getName().toLowerCase().contains(name.toLowerCase())) {
@@ -70,7 +46,7 @@ public class BukkitUtil {
             }
         }
 
-        Player exactPlayer = Bukkit.getPlayerExact(name);
+        Player exactPlayer = game.getPlayerExact(name);
         if (matchedPlayers.toArray().length > 1 && exactPlayer != null) {
             return exactPlayer;
         } else {
@@ -82,8 +58,8 @@ public class BukkitUtil {
         }
     }
 
-    public static UUID getUUIDByName(String name) {
-        return Bukkit.getOfflinePlayer(name).getUniqueId();
+    public static UUID getUUIDByName(String name, Game game) {
+        return game.getOfflinePlayer(name).getUniqueId();
     }
 
     /**
@@ -92,7 +68,7 @@ public class BukkitUtil {
      * it will return "Console" in {@link org.bukkit.ChatColor#RED RED}, if sender is instance of
      * {@link org.bukkit.entity.Player Player}, it will return player's {@link org.bukkit.entity.Player#getDisplayName() DisplayName}
      */
-    public static String getSenderName(CommandSender sender) {
+    public static String getSenderName(CommandSender sender, Game game) {
         if (sender instanceof IrcCommandSender) {
             ChatColor prefix = sender.isOp() ? ChatColor.DARK_RED : ChatColor.DARK_AQUA;
             return prefix + sender.getName() + ChatColor.RESET;

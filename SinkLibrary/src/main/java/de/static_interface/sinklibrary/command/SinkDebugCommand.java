@@ -21,12 +21,18 @@ import static de.static_interface.sinklibrary.Constants.COMMAND_PREFIX;
 
 import de.static_interface.sinklibrary.SinkLibrary;
 import de.static_interface.sinklibrary.SinkUser;
-import de.static_interface.sinklibrary.Util;
 import de.static_interface.sinklibrary.configuration.LanguageConfiguration;
 import de.static_interface.sinklibrary.configuration.PlayerConfiguration;
+import de.static_interface.sinklibrary.description.DescriptionFacotry;
+import de.static_interface.sinklibrary.util.Util;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.Game;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.Description;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SinkDebugCommand extends Command {
 
@@ -34,8 +40,8 @@ public class SinkDebugCommand extends Command {
 
     String cmd = getCommandPrefix() + "sdebug";
 
-    public SinkDebugCommand(Plugin plugin) {
-        super(plugin);
+    public SinkDebugCommand(Game game) {
+        super(game);
     }
 
     @Override
@@ -43,7 +49,7 @@ public class SinkDebugCommand extends Command {
         return true;
     }
 
-    public boolean onExecute(CommandSender sender, String label, String[] args) {
+    public boolean onExecute(CommandSource sender, String label, String[] args) {
         if (args.length < 1) {
             return false;
         }
@@ -59,7 +65,7 @@ public class SinkDebugCommand extends Command {
                 String path = args[2];
                 SinkUser user = SinkLibrary.getInstance().getUser(player);
                 PlayerConfiguration config = user.getPlayerConfiguration();
-                sender.sendMessage(PREFIX + "Output: " + config.getYamlConfiguration().getString(path));
+                sender.sendMessage(PREFIX + "Output: " + config.get(path));
                 break;
             }
 
@@ -139,5 +145,23 @@ public class SinkDebugCommand extends Command {
             return Integer.parseInt(value);
         }
         return value;
+    }
+
+    @Override
+    public Description getDescription() {
+        List<String> perms = new ArrayList<>();
+        perms.add("sinklibrary.debug");
+        DescriptionFacotry factory = new DescriptionFacotry("/sdebug <option> <args>", perms);
+        return factory.setShortDescription("Allows debugging").setHelp(null).build();
+    }
+
+    @Override
+    public boolean testPermission(CommandSource commandSource) {
+        return false;
+    }
+
+    @Override
+    public List<String> getSuggestions(CommandSource commandSource, String s) throws CommandException {
+        return null;
     }
 }

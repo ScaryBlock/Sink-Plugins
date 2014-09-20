@@ -17,7 +17,7 @@
 
 package de.static_interface.sinklibrary.command;
 
-import de.static_interface.sinklibrary.BukkitUtil;
+import de.static_interface.sinklibrary.util.BukkitUtil;
 import de.static_interface.sinklibrary.SinkLibrary;
 import de.static_interface.sinklibrary.SinkUser;
 import de.static_interface.sinklibrary.configuration.LanguageConfiguration;
@@ -57,12 +57,6 @@ public class SinkReloadCommand extends Command {
         for (Player p : BukkitUtil.getOnlinePlayers()) {
             SinkUser user = SinkLibrary.getInstance().getUser(p);
             user.getPlayerConfiguration().reload();
-        }
-
-        sender.sendMessage(PREFIX + "Reloading Plugins...");
-        for (Plugin p : SinkLibrary.getInstance().getRegisteredPlugins()) {
-            p.onDisable();
-            p.onEnable();
         }
 
         sender.sendMessage(PREFIX + ChatColor.GREEN + "Done");

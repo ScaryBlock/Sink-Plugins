@@ -19,29 +19,28 @@ package de.static_interface.sinklibrary.command;
 
 import de.static_interface.sinklibrary.exception.UnauthorizedAccessException;
 import de.static_interface.sinklibrary.sender.IrcCommandSender;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.Game;
+import org.spongepowered.api.command.CommandCallable;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.entity.Player;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
-public abstract class Command implements CommandExecutor {
+public abstract class Command implements CommandCallable {
 
-    protected CommandSender sender;
-    protected Plugin plugin;
+    protected CommandSource sender;
+    protected Game game;
     private String usage = null;
 
-    public Command(Plugin plugin) {
-        this.plugin = plugin;
+    public Command(Game game) {
+        this.game= game;
     }
 
     @Override
-    public final boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
+    public final boolean call(CommandSource sender, String arguments, List<String> parents) {
         this.sender = sender;
-        return onPreExecute(sender, label, args);
+        return onPreExecute(sender, arguments, arguments.split(" "), parents);
     }
 
     public boolean isPlayerOnly() {
@@ -62,7 +61,7 @@ public abstract class Command implements CommandExecutor {
         return false;
     }
 
-    protected boolean onPreExecute(final CommandSender sender, final String label, final String[] args) {
+    protected boolean onPreExecute(final CommandSource sender, final String label, final String[] args, List<String> parents) {
         if (isPlayerOnly() && isIrcOnly()) {
             throw new IllegalStateException("Commands can't be IRC only & Player only ath the same time");
         }
@@ -82,6 +81,7 @@ public abstract class Command implements CommandExecutor {
             ((IrcCommandSender) sender).setUseNotice(true);
         }
 
+        //Todo: Sponge Scheduler is not implemented yet
         Bukkit.getScheduler().runTask(plugin, new Runnable() {
             @Override
             public void run() {
@@ -104,9 +104,9 @@ public abstract class Command implements CommandExecutor {
         return true;
     }
 
-    protected abstract boolean onExecute(CommandSender sender, String label, String[] args);
+    protected abstract boolean onExecute(CommandSource sender, String label, String[] args);
 
-    protected void onPostExecute(CommandSender sender, String label, String[] args, Exception exception, boolean success) {
+    protected void onPostExecute(CommandSource sender, String label, String[] args, Exception exception, boolean success) {
         if (exception instanceof UnauthorizedAccessException) {
             sender.sendMessage(ChatColor.DARK_RED + "You don't have access to this command.");
             return;

@@ -38,7 +38,7 @@ import de.static_interface.sinkcommands.listener.DrugDeadListener;
 import de.static_interface.sinkcommands.listener.GlobalMuteListener;
 import de.static_interface.sinkcommands.listener.ScoreboardListener;
 import de.static_interface.sinkcommands.listener.VotekickListener;
-import de.static_interface.sinklibrary.BukkitUtil;
+import de.static_interface.sinklibrary.util.BukkitUtil;
 import de.static_interface.sinklibrary.SinkLibrary;
 import de.static_interface.sinklibrary.SinkUser;
 import de.static_interface.sinklibrary.command.SinkVersionrCommand;

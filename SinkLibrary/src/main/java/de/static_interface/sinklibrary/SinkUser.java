@@ -20,13 +20,12 @@ package de.static_interface.sinklibrary;
 import de.static_interface.sinklibrary.configuration.PlayerConfiguration;
 import de.static_interface.sinklibrary.exception.EconomyNotAvailableException;
 import de.static_interface.sinklibrary.exception.PermissionsNotAvailableException;
+import de.static_interface.sinklibrary.util.BukkitUtil;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.spongepowered.api.Game;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.entity.Player;
 
 import java.util.UUID;
 
@@ -36,10 +35,10 @@ public class SinkUser implements Comparable<SinkUser> {
     private static Player base = null;
     private static Economy econ = null;
     private String playerName = null;
-    private CommandSender sender = null;
+    private CommandSource sender = null;
     private PlayerConfiguration config = null;
     private UUID uuid = null;
-
+    private Game game;
     /**
      * Get User instance by player's name
      * <p>
@@ -47,8 +46,9 @@ public class SinkUser implements Comparable<SinkUser> {
      *
      * @param sender Sender
      */
-    SinkUser(CommandSender sender) {
+    SinkUser(CommandSource sender, Game game) {
         this.sender = sender;
+        this.game = game;
         initUser(sender.getName());
     }
 
@@ -57,24 +57,25 @@ public class SinkUser implements Comparable<SinkUser> {
      *
      * @param uuid UUID of user
      */
-    SinkUser(UUID uuid) {
+    SinkUser(UUID uuid, Game game) {
         this.uuid = uuid;
-        initUser(Bukkit.getOfflinePlayer(uuid).getName());
+        this.game = game;
+        initUser(game.getOfflinePlayer(uuid).getName());
     }
 
     public void initUser(String player) {
         if (player.equalsIgnoreCase("console")) {
-            sender = Bukkit.getConsoleSender();
+            sender = game.getConsoleCommandSource();
             base = null;
             econ = SinkLibrary.getInstance().getEconomy();
             playerName = "Console";
             return;
         }
-        base = BukkitUtil.getPlayer(player);
+        base = BukkitUtil.getPlayer(player, game);
         econ = SinkLibrary.getInstance().getEconomy();
         playerName = player;
         if (base == null) {
-            uuid = Bukkit.getOfflinePlayer(playerName).getUniqueId();
+            uuid = game.getOfflinePlayer(playerName).getUniqueId();
             return;
         }
         if (sender == null) {
@@ -97,7 +98,7 @@ public class SinkUser implements Comparable<SinkUser> {
         String target = playerName;
         if (target == null || target.isEmpty()) {
             if (player == null) {
-                player = Bukkit.getOfflinePlayer(uuid);
+                player = game.getOfflinePlayer(uuid);
             }
             target = player.getName();
         }

@@ -28,16 +28,19 @@ import de.static_interface.sinklibrary.listener.DisplayNameListener;
 import de.static_interface.sinklibrary.listener.IrcCommandListener;
 import de.static_interface.sinklibrary.listener.IrcLinkListener;
 import de.static_interface.sinklibrary.listener.PlayerConfigurationListener;
+import de.static_interface.sinklibrary.util.BukkitUtil;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.spongepowered.api.Game;
+import org.spongepowered.api.command.CommandCallable;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.Description;
+import org.spongepowered.api.entity.Player;
+import org.spongepowered.api.event.SpongeEventHandler;
+import org.spongepowered.api.event.state.ServerStartingEvent;
+import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.plugin.PluginContainer;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,8 +55,8 @@ import java.util.logging.Level;
 import javax.annotation.Nullable;
 
 @SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
-public class SinkLibrary extends JavaPlugin {
-
+@Plugin(id = "SinkLibrary", name = "SinkLibrary", dependencies = "after:Vault")
+public class SinkLibrary {
     public List<String> tmpBannedPlayers;
     private boolean sinkChatAvailable;
     private boolean ircAvailable;
@@ -66,24 +69,30 @@ public class SinkLibrary extends JavaPlugin {
     private File dataFolder;
     private String version;
     private Settings settings;
-    private List<JavaPlugin> registeredPlugins;
     private volatile HashMap<UUID, SinkUser> onlineUsers;
-    private PluginDescriptionFile description;
     private boolean economyAvailable = true;
     private boolean permissionsAvailable = true;
     private boolean chatAvailable = true;
     private boolean vaultAvailable = false;
     private HashMap<String, Command> commandAliases;
     private HashMap<String, Command> commands;
+    private Game game;
+    private PluginContainer pluginContainer;
+    /*
+     * Todo:
+     * WAIT FOR SPONGE API PROGRESS
+     * There is too many stuff thats missing
+     */
 
-    public void onEnable() {
+    @SpongeEventHandler
+    public void onServerStarting(ServerStartingEvent event) {
         // Init variables first to prevent NullPointerExceptions when other plugins try to access them
-        version = getDescription().getVersion();
+        game = event.getGame();
+        pluginContainer = game.getPluginManager().getPlugin("SinkLibrary");
+        version = pluginContainer.getVersion();
         tmpBannedPlayers = new ArrayList<>();
-        registeredPlugins = new ArrayList<>();
         onlineUsers = new HashMap<>();
-        description = getDescription();
-        dataFolder = getDataFolder();
+        dataFolder = getDataFolder(); // Todo
         logger = new Logger();
         timer = new TpsTimer();
         commands = new HashMap<>();
@@ -99,7 +108,7 @@ public class SinkLibrary extends JavaPlugin {
 
         logger.log(Level.INFO, "Loading...");
         // Check optional dependencies
-        if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
+        if (game.getPluginManager().getPlugin("Vault") == null) {
             getCustomLogger().warning("Vault Plugin not found. Disabling economy and some permission features.");
             permissionsAvailable = false;
             economyAvailable = false;
@@ -121,7 +130,7 @@ public class SinkLibrary extends JavaPlugin {
                 permissionsAvailable = false;
             }
 
-            for (Player p : BukkitUtil.getOnlinePlayers()) {
+            for (Player p : game.getOnlinePlayers()) {
                 refreshDisplayName(p);
             }
         }
@@ -159,7 +168,7 @@ public class SinkLibrary extends JavaPlugin {
             getUser(p.getUniqueId());
         }
 
-        sinkChatAvailable = Bukkit.getPluginManager().getPlugin("SinkChat") != null;
+        sinkChatAvailable = game.getPluginManager().getPlugin("SinkChat") != null;
 
         if (Bukkit.getPluginManager().getPlugin("SinkIRC") != null) {
             ircAvailable = true;
@@ -325,7 +334,7 @@ public class SinkLibrary extends JavaPlugin {
         }
         getCustomLogger().debug("Firing new IRCSendMessageEvent(\"" + message + "\")");
         IrcSendMessageEvent event = new IrcSendMessageEvent(message, target);
-        Bukkit.getPluginManager().callEvent(event);
+        game.getEventManager().callEvent(event);
         return event.isCancelled();
     }
 
@@ -357,15 +366,6 @@ public class SinkLibrary extends JavaPlugin {
     }
 
     /**
-     * Register a plugin
-     *
-     * @param plugin Class which extends {@link org.bukkit.plugin.java.JavaPlugin}
-     */
-    public void registerPlugin(JavaPlugin plugin) {
-        registeredPlugins.add(plugin);
-    }
-
-    /**
      * @param player Player
      * @return User instance of player
      */
@@ -380,7 +380,7 @@ public class SinkLibrary extends JavaPlugin {
      */
     @Deprecated
     public SinkUser getUser(String playerName) {
-        UUID uuid = BukkitUtil.getUUIDByName(playerName);
+        UUID uuid = BukkitUtil.getUUIDByName(playerName, game);
         return getUser(uuid);
     }
 
@@ -396,7 +396,7 @@ public class SinkLibrary extends JavaPlugin {
      * @param sender Command Sender
      * @return User instance
      */
-    public SinkUser getUser(CommandSender sender) {
+    public SinkUser getUser(CommandSource sender) {
         if (!(sender instanceof Player)) {
             return new SinkUser(sender);
         }
@@ -451,20 +451,13 @@ public class SinkLibrary extends JavaPlugin {
     }
 
     /**
-     * @return Plugins which are registered through {@link SinkLibrary#registerPlugin(org.bukkit.plugin.java.JavaPlugin)}
-     */
-    public List<JavaPlugin> getRegisteredPlugins() {
-        return registeredPlugins;
-    }
-
-    /**
      * Unload an User
      * Do not call this, its handled internally
      *
      * @param uuid UUID of the user who needs to be loaded
      */
     public void loadUser(UUID uuid) {
-        if (onlineUsers.get(uuid) != null || Bukkit.getPlayer(uuid) == null) {
+        if (onlineUsers.get(uuid) != null || game.getPlayer(uuid) == null) {
             return;
         }
         onlineUsers.put(uuid, new SinkUser(uuid));
@@ -488,7 +481,7 @@ public class SinkLibrary extends JavaPlugin {
      * @return the name of this plugin
      */
     public String getPluginName() {
-        return description.getName();
+        return pluginContainer.getName();
     }
 
     /**
@@ -517,10 +510,11 @@ public class SinkLibrary extends JavaPlugin {
         name = name.toLowerCase();
         if (!command.isIrcOnly()) {
             try {
-                PluginCommand cmd = Bukkit.getPluginCommand(name);
+                CommandCallable cmd = Bukkit.getPluginCommand(name);
                 if (cmd != null) {
                     cmd.setExecutor(command);
-                    for (String alias : cmd.getAliases()) // Register alias commands
+                    Description desc = cmd.getDescription();
+                    for (String alias : desc.getAliases()) // Register alias commands
                     {
                         alias = alias.toLowerCase();
                         if (alias.equals(name)) {
@@ -528,7 +522,7 @@ public class SinkLibrary extends JavaPlugin {
                         }
                         commandAliases.put(alias, command);
                     }
-                    command.setUsage(cmd.getUsage());
+                    command.setUsage(desc.getHelp());
                 }
             } catch (NullPointerException ignored) {
                 // do nothing because command may be an irc command which is not registered in the plugin.yml
@@ -591,13 +585,13 @@ public class SinkLibrary extends JavaPlugin {
     }
 
     private void registerListeners() {
-        Bukkit.getPluginManager().registerEvents(new PlayerConfigurationListener(), this);
-        Bukkit.getPluginManager().registerEvents(new DisplayNameListener(), this);
+        game.getEventManager().register(new PlayerConfigurationListener());
+        game.getEventManager().register(new DisplayNameListener());
     }
 
     private void registerCommands() {
-        registerCommand("sdebug", new SinkDebugCommand(this));
-        registerCommand("sinkreload", new SinkReloadCommand(this));
+        registerCommand("sdebug", new SinkDebugCommand(game));
+        registerCommand("sinkreload", new SinkReloadCommand(game));
     }
 
     public boolean isSinkChatAvailable() {
