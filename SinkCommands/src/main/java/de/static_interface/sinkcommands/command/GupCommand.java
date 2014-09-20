@@ -22,9 +22,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.command.CommandSource;
 
 public class GupCommand extends Command {
 
@@ -38,7 +38,7 @@ public class GupCommand extends Command {
     }
 
     @Override
-    protected boolean onExecute(CommandSender sender, String label, String[] args) {
+    protected boolean onExecute(CommandSource sender, String label, String[] args) {
         Player player = (Player) sender;
         World world = player.getWorld();
         Location loc = player.getLocation();

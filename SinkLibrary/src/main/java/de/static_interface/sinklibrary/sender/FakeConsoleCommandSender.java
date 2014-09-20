@@ -18,23 +18,23 @@
 package de.static_interface.sinklibrary.sender;
 
 import org.bukkit.Server;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.ConsoleCommandSource;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.command.CommandSource;
 
 import java.util.Set;
 
-public class FakeConsoleCommandSender implements ConsoleCommandSender, FakeSender {
+public class FakeConsoleCommandSource implements ConsoleCommandSource, FakeSender {
 
-    private final ConsoleCommandSender base;
-    private final CommandSender faker;
+    private final ConsoleCommandSource base;
+    private final CommandSource faker;
 
-    public FakeConsoleCommandSender(ConsoleCommandSender base, CommandSender faker) {
+    public FakeConsoleCommandSource(ConsoleCommandSource base, CommandSource faker) {
         this.base = base;
         this.faker = faker;
     }
@@ -158,12 +158,12 @@ public class FakeConsoleCommandSender implements ConsoleCommandSender, FakeSende
     }
 
     @Override
-    public CommandSender getBase() {
+    public CommandSource getBase() {
         return base;
     }
 
     @Override
-    public CommandSender getFaker() {
+    public CommandSource getFaker() {
         return faker;
     }
 }

@@ -21,10 +21,10 @@ import de.static_interface.sinkirc.IrcUtil;
 import de.static_interface.sinklibrary.SinkLibrary;
 import de.static_interface.sinklibrary.SinkUser;
 import de.static_interface.sinklibrary.configuration.LanguageConfiguration;
-import de.static_interface.sinklibrary.sender.IrcCommandSender;
+import de.static_interface.sinklibrary.sender.IrcCommandSource;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.command.CommandSource;
 
 public class MsgCommand extends IrcCommand {
 
@@ -34,8 +34,8 @@ public class MsgCommand extends IrcCommand {
     }
 
     @Override
-    public boolean onExecute(CommandSender cs, String label, String[] args) {
-        IrcCommandSender sender = (IrcCommandSender) cs;
+    public boolean onExecute(CommandSource cs, String label, String[] args) {
+        IrcCommandSource sender = (IrcCommandSource) cs;
         if (args.length < 2) {
             return false;
         }

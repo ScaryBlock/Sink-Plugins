@@ -19,8 +19,8 @@ package de.static_interface.sinklibrary.command;
 
 import de.static_interface.sinklibrary.util.Util;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.command.CommandSource;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class SinkVersionrCommand extends Command {
     }
 
     @Override
-    public boolean onExecute(CommandSender sender, String label, String[] args) {
+    public boolean onExecute(CommandSource sender, String label, String[] args) {
         List<String> authorsList = plugin.getDescription().getAuthors();
         String authors = Util.formatPlayerListToString(authorsList);
         sender.sendMessage(PREFIX + plugin.getDescription().getName() + " by " + authors);

@@ -17,14 +17,14 @@
 
 package de.static_interface.sinkirc.irc_command;
 
-import de.static_interface.sinklibrary.util.BukkitUtil;
 import de.static_interface.sinklibrary.SinkLibrary;
 import de.static_interface.sinklibrary.SinkUser;
+import de.static_interface.sinklibrary.util.BukkitUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.command.CommandSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class ListCommand extends IrcCommand {
     }
 
     @Override
-    public boolean onExecute(CommandSender sender, String label, String[] args) {
+    public boolean onExecute(CommandSource sender, String label, String[] args) {
         if (BukkitUtil.getOnlinePlayers().size() == 0) {
             sender.sendMessage("There are currently no online players");
             return true;

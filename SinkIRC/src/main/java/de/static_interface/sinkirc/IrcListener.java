@@ -17,7 +17,6 @@
 
 package de.static_interface.sinkirc;
 
-import de.static_interface.sinklibrary.util.BukkitUtil;
 import de.static_interface.sinklibrary.SinkLibrary;
 import de.static_interface.sinklibrary.SinkUser;
 import de.static_interface.sinklibrary.event.IrcJoinEvent;
@@ -28,6 +27,7 @@ import de.static_interface.sinklibrary.event.IrcPrivateMessageEvent;
 import de.static_interface.sinklibrary.event.IrcQuitEvent;
 import de.static_interface.sinklibrary.event.IrcReceiveMessageEvent;
 import de.static_interface.sinklibrary.event.IrcSendMessageEvent;
+import de.static_interface.sinklibrary.util.BukkitUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

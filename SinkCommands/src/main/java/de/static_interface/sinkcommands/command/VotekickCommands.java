@@ -19,16 +19,16 @@ package de.static_interface.sinkcommands.command;
 
 import static de.static_interface.sinklibrary.Constants.COMMAND_PREFIX;
 
-import de.static_interface.sinklibrary.util.BukkitUtil;
 import de.static_interface.sinklibrary.SinkLibrary;
 import de.static_interface.sinklibrary.SinkUser;
+import de.static_interface.sinklibrary.util.BukkitUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.command.CommandSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class VotekickCommands {
 
     static String target;
 
-    static List<CommandSender> votedPlayers = new ArrayList<>();
+    static List<CommandSource> votedPlayers = new ArrayList<>();
 
     public static void endVoteKick(Plugin plugin) {
         if (voteStarted) {
@@ -81,7 +81,7 @@ public class VotekickCommands {
     }
 
     @SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
-    static void sendStatus(CommandSender sender) {
+    static void sendStatus(CommandSource sender) {
         if (!VotekickCommands.voteStarted) {
             sender.sendMessage(PREFIX + "Derzeit läuft kein Votekick...");
             return;
@@ -92,7 +92,7 @@ public class VotekickCommands {
     }
 
     @SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
-    static boolean vote(CommandSender sender, boolean yes, Plugin plugin) {
+    static boolean vote(CommandSource sender, boolean yes, Plugin plugin) {
         if (!VotekickCommands.voteStarted) {
             sender.sendMessage(PREFIX + "Derzeit läuft kein Votekick...");
             return true;
@@ -126,7 +126,7 @@ public class VotekickCommands {
         }
 
         @Override
-        public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        public boolean onCommand(CommandSource sender, Command cmd, String label, String[] args) {
             if (args.length < 1) {
                 return false;
             }
@@ -232,7 +232,7 @@ public class VotekickCommands {
         }
 
         @Override
-        public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        public boolean onCommand(CommandSource sender, Command cmd, String label, String[] args) {
             return vote(sender, true, plugin);
         }
     }
@@ -246,7 +246,7 @@ public class VotekickCommands {
         }
 
         @Override
-        public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        public boolean onCommand(CommandSource sender, Command cmd, String label, String[] args) {
             return vote(sender, false, plugin);
         }
     }
@@ -254,7 +254,7 @@ public class VotekickCommands {
     public static class VotestatusCommand implements CommandExecutor {
 
         @Override
-        public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        public boolean onCommand(CommandSource sender, Command cmd, String label, String[] args) {
             sendStatus(sender);
             return true;
         }
@@ -269,7 +269,7 @@ public class VotekickCommands {
         }
 
         @Override
-        public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        public boolean onCommand(CommandSource commandSender, Command command, String s, String[] strings) {
             BukkitUtil.broadcast(PREFIX + ChatColor.RED + "Der Votekick gegen " + target + ChatColor.RED + " wurde durch " + BukkitUtil
                     .getSenderName(commandSender) + ChatColor.RED + " beendet.", "sinkcommands.votekick.vote", true);
             voteStarted = false;
@@ -281,7 +281,7 @@ public class VotekickCommands {
     public static class VotekickunbanCommand implements CommandExecutor {
 
         @Override
-        public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        public boolean onCommand(CommandSource sender, Command cmd, String label, String[] args) {
             if (args.length != 1) {
                 return false;
             }

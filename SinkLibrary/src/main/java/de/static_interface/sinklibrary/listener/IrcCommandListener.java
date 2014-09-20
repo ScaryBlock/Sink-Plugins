@@ -20,7 +20,7 @@ package de.static_interface.sinklibrary.listener;
 import de.static_interface.sinklibrary.SinkLibrary;
 import de.static_interface.sinklibrary.command.Command;
 import de.static_interface.sinklibrary.event.IrcCommandEvent;
-import de.static_interface.sinklibrary.sender.IrcCommandSender;
+import de.static_interface.sinklibrary.sender.IrcCommandSource;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -49,7 +49,7 @@ public class IrcCommandListener implements Listener {
 
     private boolean executeCommand(User user, String command, String source, String label, String[] args) {
         //Todo add events
-        IrcCommandSender sender = new IrcCommandSender(user, source);
+        IrcCommandSource sender = new IrcCommandSource(user, source);
         Command cmd = SinkLibrary.getInstance().getCustomCommand(command);
         if (cmd == null || cmd.isPlayerOnly()) {
             return false;

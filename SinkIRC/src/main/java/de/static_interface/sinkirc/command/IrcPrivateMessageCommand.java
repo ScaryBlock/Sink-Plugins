@@ -23,12 +23,12 @@ import de.static_interface.sinklibrary.configuration.LanguageConfiguration;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.spongepowered.api.command.CommandSource;
 
 public class IrcPrivateMessageCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSource sender, Command command, String label, String[] args) {
         if (args.length < 2) {
             sender.sendMessage(LanguageConfiguration.m("General.CommandMisused.Arguments.TooFew"));
             return true;

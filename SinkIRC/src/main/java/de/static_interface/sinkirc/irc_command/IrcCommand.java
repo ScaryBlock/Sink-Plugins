@@ -19,7 +19,7 @@ package de.static_interface.sinkirc.irc_command;
 
 import de.static_interface.sinkirc.IrcListener;
 import de.static_interface.sinklibrary.command.Command;
-import de.static_interface.sinklibrary.sender.IrcCommandSender;
+import de.static_interface.sinklibrary.sender.IrcCommandSource;
 import org.bukkit.plugin.Plugin;
 
 public abstract class IrcCommand extends Command {
@@ -41,9 +41,9 @@ public abstract class IrcCommand extends Command {
     }
 
     public boolean isQueryCommand() {
-        assert sender instanceof IrcCommandSender;
+        assert sender instanceof IrcCommandSource;
 
-        IrcCommandSender ircSender = (IrcCommandSender) sender;
+        IrcCommandSource ircSender = (IrcCommandSource) sender;
 
         return !ircSender.getSource().startsWith("#");
     }

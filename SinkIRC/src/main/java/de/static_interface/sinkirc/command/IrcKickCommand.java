@@ -23,13 +23,13 @@ import de.static_interface.sinklibrary.SinkLibrary;
 import de.static_interface.sinklibrary.SinkUser;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.pircbotx.Channel;
+import org.spongepowered.api.command.CommandSource;
 
 public class IrcKickCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(CommandSource sender, Command cmd, String label, String[] args) {
         SinkUser user = SinkLibrary.getInstance().getUser(sender);
 
         if (args.length < 1) {

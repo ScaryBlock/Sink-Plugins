@@ -31,7 +31,6 @@ import org.bukkit.Statistic;
 import org.bukkit.WeatherType;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.entity.Arrow;
@@ -58,6 +57,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
+import org.spongepowered.api.command.CommandSource;
 
 import java.net.InetSocketAddress;
 import java.util.Collection;
@@ -67,12 +67,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public class FakePlayerCommandSender implements Player, FakeSender {
+public class FakePlayerCommandSource implements Player, FakeSender {
 
     private final Player base;
-    private final CommandSender faker;
+    private final CommandSource faker;
 
-    public FakePlayerCommandSender(Player base, CommandSender faker) {
+    public FakePlayerCommandSource(Player base, CommandSource faker) {
         this.base = base;
         this.faker = faker;
     }
@@ -1335,12 +1335,12 @@ public class FakePlayerCommandSender implements Player, FakeSender {
     }
 
     @Override
-    public CommandSender getBase() {
+    public CommandSource getBase() {
         return base;
     }
 
     @Override
-    public CommandSender getFaker() {
+    public CommandSource getFaker() {
         return faker;
     }
 }

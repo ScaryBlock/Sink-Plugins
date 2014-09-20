@@ -17,11 +17,11 @@
 
 package de.static_interface.sinklibrary.sender;
 
-import org.bukkit.command.CommandSender;
+import org.spongepowered.api.command.CommandSource;
 
-public interface FakeSender extends CommandSender {
+public interface FakeSender extends CommandSource {
 
-    CommandSender getBase();
+    CommandSource getBase();
 
-    CommandSender getFaker();
+    CommandSource getFaker();
 }

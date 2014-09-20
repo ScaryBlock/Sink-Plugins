@@ -18,13 +18,13 @@
 package de.static_interface.sinkcommands.command;
 
 import de.static_interface.sinklibrary.command.Command;
-import de.static_interface.sinklibrary.sender.FakeConsoleCommandSender;
-import de.static_interface.sinklibrary.sender.FakePlayerCommandSender;
+import de.static_interface.sinklibrary.sender.FakeConsoleCommandSource;
+import de.static_interface.sinklibrary.sender.FakePlayerCommandSource;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.command.CommandSource;
 
 public class SudoCommand extends Command {
 
@@ -38,15 +38,15 @@ public class SudoCommand extends Command {
     }
 
     @Override
-    protected boolean onExecute(CommandSender sender, String label, String[] args) {
+    protected boolean onExecute(CommandSource sender, String label, String[] args) {
         if (args.length < 2) {
             return false;
         }
         String target = args[0];
-        CommandSender fakeSender;
+        CommandSource fakeSender;
 
         if (target.equalsIgnoreCase("console")) {
-            fakeSender = new FakeConsoleCommandSender
+            fakeSender = new FakeConsoleCommandSource
                     (Bukkit.getConsoleSender(), sender);
         } else {
             Player p = Bukkit.getPlayer(target);
@@ -54,7 +54,7 @@ public class SudoCommand extends Command {
                 sender.sendMessage(ChatColor.DARK_RED + "Fehler: " + ChatColor.RED + "Spieler ist nicht online!");
                 return true;
             }
-            fakeSender = new FakePlayerCommandSender(p, sender);
+            fakeSender = new FakePlayerCommandSource(p, sender);
         }
 
         String commandLine = "";

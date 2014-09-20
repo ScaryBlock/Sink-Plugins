@@ -21,9 +21,9 @@ import de.static_interface.sinkirc.IrcUtil;
 import de.static_interface.sinklibrary.util.BukkitUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.command.CommandSource;
 
 public class KickCommand extends IrcCommand {
 
@@ -38,7 +38,7 @@ public class KickCommand extends IrcCommand {
     }
 
     @Override
-    public boolean onExecute(CommandSender sender, String label, String[] args) {
+    public boolean onExecute(CommandSource sender, String label, String[] args) {
         String targetPlayerName;
         try {
             targetPlayerName = args[0];

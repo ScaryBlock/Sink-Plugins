@@ -17,10 +17,10 @@
 
 package de.static_interface.sinkirc.irc_command;
 
-import de.static_interface.sinklibrary.sender.IrcCommandSender;
+import de.static_interface.sinklibrary.sender.IrcCommandSource;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.command.CommandSource;
 
 public class ExecCommand extends IrcCommand {
 
@@ -39,8 +39,8 @@ public class ExecCommand extends IrcCommand {
     }
 
     @Override
-    public boolean onExecute(final CommandSender cs, String label, String[] args) {
-        final IrcCommandSender sender = (IrcCommandSender) cs;
+    public boolean onExecute(final CommandSource cs, String label, String[] args) {
+        final IrcCommandSource sender = (IrcCommandSource) cs;
         String commandWithArgs = "";
         int i = 0;
         for (String arg : args) {

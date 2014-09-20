@@ -380,7 +380,7 @@ public class SinkLibrary {
      */
     @Deprecated
     public SinkUser getUser(String playerName) {
-        UUID uuid = BukkitUtil.getUUIDByName(playerName, game);
+        UUID uuid = BukkitUtil.getUUIDByName(playerName);
         return getUser(uuid);
     }
 
@@ -590,11 +590,15 @@ public class SinkLibrary {
     }
 
     private void registerCommands() {
-        registerCommand("sdebug", new SinkDebugCommand(game));
-        registerCommand("sinkreload", new SinkReloadCommand(game));
+        registerCommand("sdebug", new SinkDebugCommand());
+        registerCommand("sinkreload", new SinkReloadCommand());
     }
 
     public boolean isSinkChatAvailable() {
         return sinkChatAvailable;
+    }
+
+    public Game getGame() {
+        return game;
     }
 }

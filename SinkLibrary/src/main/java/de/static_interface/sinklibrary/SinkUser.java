@@ -23,7 +23,6 @@ import de.static_interface.sinklibrary.exception.PermissionsNotAvailableExceptio
 import de.static_interface.sinklibrary.util.BukkitUtil;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.spongepowered.api.Game;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.Player;
 
@@ -38,7 +37,6 @@ public class SinkUser implements Comparable<SinkUser> {
     private CommandSource sender = null;
     private PlayerConfiguration config = null;
     private UUID uuid = null;
-    private Game game;
     /**
      * Get User instance by player's name
      * <p>
@@ -46,7 +44,7 @@ public class SinkUser implements Comparable<SinkUser> {
      *
      * @param sender Sender
      */
-    SinkUser(CommandSource sender, Game game) {
+    SinkUser(CommandSource sender) {
         this.sender = sender;
         this.game = game;
         initUser(sender.getName());
@@ -57,7 +55,7 @@ public class SinkUser implements Comparable<SinkUser> {
      *
      * @param uuid UUID of user
      */
-    SinkUser(UUID uuid, Game game) {
+    SinkUser(UUID uuid) {
         this.uuid = uuid;
         this.game = game;
         initUser(game.getOfflinePlayer(uuid).getName());
@@ -162,9 +160,9 @@ public class SinkUser implements Comparable<SinkUser> {
     }
 
     /**
-     * @return CommandSender
+     * @return CommandSource
      */
-    public CommandSender getSender() {
+    public CommandSource getSender() {
         return sender;
     }
 
@@ -284,7 +282,7 @@ public class SinkUser implements Comparable<SinkUser> {
     }
 
     /**
-     * @return If {@link org.bukkit.command.CommandSender CommandSnder} is instance of {@link org.bukkit.command.ConsoleCommandSender ConsoleCommandSender},
+     * @return If {@link org.bukkit.command.CommandSource CommandSnder} is instance of {@link org.bukkit.command.ConsoleCommandSource ConsoleCommandSource},
      * it will return "Console" in {@link org.bukkit.ChatColor#RED RED}, if sender is instance of
      * {@link org.bukkit.entity.Player Player}, it will return player's {@link org.bukkit.entity.Player#getDisplayName() DisplayName}
      */

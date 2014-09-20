@@ -26,7 +26,6 @@ import de.static_interface.sinklibrary.configuration.PlayerConfiguration;
 import de.static_interface.sinklibrary.description.DescriptionFacotry;
 import de.static_interface.sinklibrary.util.Util;
 import org.bukkit.ChatColor;
-import org.spongepowered.api.Game;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.Description;
@@ -39,10 +38,6 @@ public class SinkDebugCommand extends Command {
     public static final String PREFIX = ChatColor.BLUE + "[Debug] " + ChatColor.RESET;
 
     String cmd = getCommandPrefix() + "sdebug";
-
-    public SinkDebugCommand(Game game) {
-        super(game);
-    }
 
     @Override
     public boolean isIrcOpOnly() {

@@ -18,8 +18,7 @@
 package de.static_interface.sinklibrary.command;
 
 import de.static_interface.sinklibrary.exception.UnauthorizedAccessException;
-import de.static_interface.sinklibrary.sender.IrcCommandSender;
-import org.spongepowered.api.Game;
+import de.static_interface.sinklibrary.sender.IrcCommandSource;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.Player;
@@ -30,12 +29,7 @@ import java.util.List;
 public abstract class Command implements CommandCallable {
 
     protected CommandSource sender;
-    protected Game game;
     private String usage = null;
-
-    public Command(Game game) {
-        this.game= game;
-    }
 
     @Override
     public final boolean call(CommandSource sender, String arguments, List<String> parents) {
@@ -66,19 +60,19 @@ public abstract class Command implements CommandCallable {
             throw new IllegalStateException("Commands can't be IRC only & Player only ath the same time");
         }
 
-        if (isIrcOpOnly() && sender instanceof IrcCommandSender && !sender.isOp()) {
+        if (isIrcOpOnly() && sender instanceof IrcCommandSource && !sender.isOp()) {
             throw new UnauthorizedAccessException();
         }
 
-        if (!(sender instanceof IrcCommandSender) && isIrcOnly()) {
+        if (!(sender instanceof IrcCommandSource) && isIrcOnly()) {
             return false;
         } else if (!(sender instanceof Player) && isPlayerOnly()) {
             return false;
         }
         boolean defaultNotices = false;
-        if (useNotices() && sender instanceof IrcCommandSender) {
-            defaultNotices = ((IrcCommandSender) sender).getUseNotice();
-            ((IrcCommandSender) sender).setUseNotice(true);
+        if (useNotices() && sender instanceof IrcCommandSource) {
+            defaultNotices = ((IrcCommandSource) sender).getUseNotice();
+            ((IrcCommandSource) sender).setUseNotice(true);
         }
 
         //Todo: Sponge Scheduler is not implemented yet
@@ -97,8 +91,8 @@ public abstract class Command implements CommandCallable {
             }
         });
 
-        if (useNotices() && sender instanceof IrcCommandSender) {
-            ((IrcCommandSender) sender).setUseNotice(defaultNotices);
+        if (useNotices() && sender instanceof IrcCommandSource) {
+            ((IrcCommandSource) sender).setUseNotice(defaultNotices);
         }
 
         return true;
@@ -126,7 +120,7 @@ public abstract class Command implements CommandCallable {
     }
 
     protected String getCommandPrefix() {
-        if (sender instanceof IrcCommandSender) {
+        if (sender instanceof IrcCommandSource) {
             return getIrcCommandPrefix();
         }
         return "/";

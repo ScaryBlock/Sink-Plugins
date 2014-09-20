@@ -19,8 +19,8 @@ package de.static_interface.sinkirc.irc_command;
 
 import de.static_interface.sinkirc.IrcUtil;
 import de.static_interface.sinklibrary.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.command.CommandSource;
 
 public class SetCommand extends Command {
 
@@ -35,7 +35,7 @@ public class SetCommand extends Command {
     }
 
     @Override
-    protected boolean onExecute(CommandSender sender, String label, String[] args) {
+    protected boolean onExecute(CommandSource sender, String label, String[] args) {
         if (args.length < 2) {
             return false;
         }

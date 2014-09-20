@@ -17,16 +17,16 @@
 
 package de.static_interface.sinkcommands.command;
 
-import de.static_interface.sinklibrary.util.BukkitUtil;
 import de.static_interface.sinklibrary.SinkLibrary;
 import de.static_interface.sinklibrary.SinkUser;
-import de.static_interface.sinklibrary.sender.IrcCommandSender;
+import de.static_interface.sinklibrary.sender.IrcCommandSource;
+import de.static_interface.sinklibrary.util.BukkitUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.spongepowered.api.command.CommandSource;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,7 +39,7 @@ import java.util.TreeSet;
 public class ListCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(CommandSource sender, Command cmd, String label, String[] args) {
         //Get essentials
         com.earth2me.essentials.Essentials essentials =
                 (com.earth2me.essentials.Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
@@ -82,7 +82,7 @@ public class ListCommand implements CommandExecutor {
                     com.earth2me.essentials.User essUser = essentials.getUser(user.getPlayer());
 
                     boolean hidden = essUser.isHidden();
-                    if ((!sender.isOp() || sender instanceof IrcCommandSender) && hidden) {
+                    if ((!sender.isOp() || sender instanceof IrcCommandSource) && hidden) {
                         vanishUsers++;
                         continue;
                     }
@@ -160,7 +160,7 @@ public class ListCommand implements CommandExecutor {
         String tmp = onlineUsersCount == 1 ? "ist" : "sind";
 
         String onlineUsersWithVanishPlayers = ChatColor.RED.toString() + onlineUsersCount
-                                              + ChatColor.GOLD + (vanishUsers > 0 && (sender.isOp() && !(sender instanceof IrcCommandSender))
+                                              + ChatColor.GOLD + (vanishUsers > 0 && (sender.isOp() && !(sender instanceof IrcCommandSource))
                                                                   ? "/" + vanishUsers : "");
 
         //Send online players + vanish players count

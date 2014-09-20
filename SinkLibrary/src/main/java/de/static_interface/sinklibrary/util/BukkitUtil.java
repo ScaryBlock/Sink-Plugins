@@ -19,7 +19,7 @@ package de.static_interface.sinklibrary.util;
 
 import de.static_interface.sinklibrary.SinkLibrary;
 import de.static_interface.sinklibrary.SinkUser;
-import de.static_interface.sinklibrary.sender.IrcCommandSender;
+import de.static_interface.sinklibrary.sender.IrcCommandSource;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.Player;
 
@@ -64,16 +64,16 @@ public class BukkitUtil {
 
     /**
      * @param sender Command Sender
-     * @return If {@link org.bukkit.command.CommandSender CommandSnder} is instance of {@link org.bukkit.command.ConsoleCommandSender ConsoleCommandSender},
+     * @return If {@link org.bukkit.command.CommandSource CommandSnder} is instance of {@link org.bukkit.command.ConsoleCommandSource ConsoleCommandSource},
      * it will return "Console" in {@link org.bukkit.ChatColor#RED RED}, if sender is instance of
      * {@link org.bukkit.entity.Player Player}, it will return player's {@link org.bukkit.entity.Player#getDisplayName() DisplayName}
      */
-    public static String getSenderName(CommandSender sender, Game game) {
-        if (sender instanceof IrcCommandSender) {
+    public static String getSenderName(CommandSource sender, Game game) {
+        if (sender instanceof IrcCommandSource) {
             ChatColor prefix = sender.isOp() ? ChatColor.DARK_RED : ChatColor.DARK_AQUA;
             return prefix + sender.getName() + ChatColor.RESET;
         }
-        if (sender instanceof ConsoleCommandSender) {
+        if (sender instanceof ConsoleCommandSource) {
             return ChatColor.DARK_RED + "Console" + ChatColor.RESET;
         }
         SinkUser user = SinkLibrary.getInstance().getUser(sender);

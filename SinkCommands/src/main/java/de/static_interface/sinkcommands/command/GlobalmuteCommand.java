@@ -18,11 +18,11 @@
 package de.static_interface.sinkcommands.command;
 
 import de.static_interface.sinkcommands.SinkCommands;
-import de.static_interface.sinklibrary.util.BukkitUtil;
 import de.static_interface.sinklibrary.command.Command;
+import de.static_interface.sinklibrary.util.BukkitUtil;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.command.CommandSource;
 
 public class GlobalmuteCommand extends Command {
 
@@ -38,7 +38,7 @@ public class GlobalmuteCommand extends Command {
     }
 
     @Override
-    public boolean onExecute(CommandSender sender, String label, String[] args) {
+    public boolean onExecute(CommandSource sender, String label, String[] args) {
         SinkCommands.globalmuteEnabled = !SinkCommands.globalmuteEnabled;
 
         if (SinkCommands.globalmuteEnabled) {

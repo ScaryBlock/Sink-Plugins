@@ -17,14 +17,14 @@
 
 package de.static_interface.sinkcommands.command;
 
-import de.static_interface.sinklibrary.util.BukkitUtil;
 import de.static_interface.sinklibrary.SinkLibrary;
 import de.static_interface.sinklibrary.SinkUser;
-import de.static_interface.sinklibrary.util.Util;
 import de.static_interface.sinklibrary.command.Command;
+import de.static_interface.sinklibrary.util.BukkitUtil;
+import de.static_interface.sinklibrary.util.Util;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.command.CommandSource;
 
 public class RawCommands {
 
@@ -40,7 +40,7 @@ public class RawCommands {
         }
 
         @Override
-        public boolean onExecute(CommandSender sender, String label, String[] args) {
+        public boolean onExecute(CommandSource sender, String label, String[] args) {
             if (args.length < 1) {
                 return false;
             }
@@ -61,7 +61,7 @@ public class RawCommands {
         }
 
         @Override
-        public boolean onExecute(CommandSender sender, String label, String[] args) {
+        public boolean onExecute(CommandSource sender, String label, String[] args) {
             if (args.length < 1) {
                 return false;
             }

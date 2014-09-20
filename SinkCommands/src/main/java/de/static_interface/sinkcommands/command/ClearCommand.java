@@ -17,15 +17,15 @@
 
 package de.static_interface.sinkcommands.command;
 
-import de.static_interface.sinklibrary.util.BukkitUtil;
 import de.static_interface.sinklibrary.SinkLibrary;
 import de.static_interface.sinklibrary.SinkUser;
+import de.static_interface.sinklibrary.util.BukkitUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
+import org.spongepowered.api.command.CommandSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +36,7 @@ public class ClearCommand implements CommandExecutor {
     public static final String PREFIX = ChatColor.RED + "[Clear] " + ChatColor.RESET;
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] argsArr) {
+    public boolean onCommand(CommandSource sender, Command cmd, String label, String[] argsArr) {
         List<String> args = Arrays.asList(argsArr);
 
         Player player;

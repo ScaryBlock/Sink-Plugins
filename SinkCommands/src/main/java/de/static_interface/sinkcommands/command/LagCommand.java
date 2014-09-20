@@ -20,8 +20,8 @@ package de.static_interface.sinkcommands.command;
 import de.static_interface.sinklibrary.SinkLibrary;
 import de.static_interface.sinklibrary.command.Command;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.command.CommandSource;
 
 import java.text.DecimalFormat;
 
@@ -34,7 +34,7 @@ public class LagCommand extends Command {
     }
 
     @Override
-    public boolean onExecute(CommandSender sender, String label, String[] args) {
+    public boolean onExecute(CommandSource sender, String label, String[] args) {
         double realTPS = SinkLibrary.getInstance().getSinkTimer().getAverageTPS();
         DecimalFormat decimalFormat = new DecimalFormat("##.0");
         String shownTPS = decimalFormat.format(realTPS);

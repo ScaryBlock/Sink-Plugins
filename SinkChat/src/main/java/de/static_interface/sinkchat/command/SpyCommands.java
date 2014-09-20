@@ -25,8 +25,8 @@ import de.static_interface.sinklibrary.configuration.PlayerConfiguration;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.spongepowered.api.command.CommandSource;
 
 public class SpyCommands {
 
@@ -35,7 +35,7 @@ public class SpyCommands {
     public static class EnableSpyCommand implements CommandExecutor {
 
         @Override
-        public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        public boolean onCommand(CommandSource sender, Command cmd, String label, String[] args) {
             SinkUser user = SinkLibrary.getInstance().getUser(sender);
 
             if (user.isConsole()) {
@@ -60,7 +60,7 @@ public class SpyCommands {
     public static class DisablSpyCommand implements CommandExecutor {
 
         @Override
-        public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        public boolean onCommand(CommandSource sender, Command cmd, String label, String[] args) {
             SinkUser user = SinkLibrary.getInstance().getUser(sender);
             if (user.isConsole()) {
                 sender.sendMessage(m("General.ConsoleNotAvailable"));

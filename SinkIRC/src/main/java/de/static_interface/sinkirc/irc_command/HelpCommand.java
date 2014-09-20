@@ -19,9 +19,9 @@ package de.static_interface.sinkirc.irc_command;
 
 import de.static_interface.sinklibrary.SinkLibrary;
 import de.static_interface.sinklibrary.command.Command;
-import de.static_interface.sinklibrary.sender.IrcCommandSender;
-import org.bukkit.command.CommandSender;
+import de.static_interface.sinklibrary.sender.IrcCommandSource;
 import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.command.CommandSource;
 
 public class HelpCommand extends IrcCommand {
 
@@ -30,8 +30,8 @@ public class HelpCommand extends IrcCommand {
     }
 
     @Override
-    public boolean onExecute(CommandSender cs, String label, String[] args) {
-        IrcCommandSender sender = (IrcCommandSender) cs;
+    public boolean onExecute(CommandSource cs, String label, String[] args) {
+        IrcCommandSource sender = (IrcCommandSource) cs;
         String cmds = "";
         for (String cmdName : SinkLibrary.getInstance().getCommands().keySet()) {
             Command cmd = SinkLibrary.getInstance().getCommands().get(cmdName);

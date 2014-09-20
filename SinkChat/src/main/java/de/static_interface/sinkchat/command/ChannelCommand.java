@@ -25,8 +25,8 @@ import de.static_interface.sinklibrary.SinkLibrary;
 import de.static_interface.sinklibrary.SinkUser;
 import de.static_interface.sinklibrary.command.Command;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.command.CommandSource;
 
 public class ChannelCommand extends Command {
 
@@ -68,7 +68,7 @@ public class ChannelCommand extends Command {
     }
 
     @Override
-    public boolean onExecute(CommandSender sender, String label, String[] args) {
+    public boolean onExecute(CommandSource sender, String label, String[] args) {
         if (args.length < 1) {
             sendHelp(label, SinkLibrary.getInstance().getUser(sender));
             return true;

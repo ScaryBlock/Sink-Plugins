@@ -22,7 +22,7 @@ import de.static_interface.sinklibrary.util.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.spongepowered.api.command.CommandSource;
 
 public class TeamchatCommand implements CommandExecutor {
 
@@ -32,7 +32,7 @@ public class TeamchatCommand implements CommandExecutor {
             + ChatColor.GRAY + "] " + ChatColor.RESET;
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(CommandSource sender, Command cmd, String label, String[] args) {
         if (args.length < 1) {
             return false;
         }

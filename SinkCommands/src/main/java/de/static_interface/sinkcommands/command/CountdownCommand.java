@@ -17,12 +17,12 @@
 
 package de.static_interface.sinkcommands.command;
 
-import de.static_interface.sinklibrary.util.BukkitUtil;
 import de.static_interface.sinklibrary.command.Command;
+import de.static_interface.sinklibrary.util.BukkitUtil;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.spongepowered.api.command.CommandSource;
 
 public class CountdownCommand extends Command {
 
@@ -39,7 +39,7 @@ public class CountdownCommand extends Command {
     }
 
     @Override
-    public boolean onExecute(CommandSender sender, String label, String[] args) {
+    public boolean onExecute(CommandSource sender, String label, String[] args) {
         if (args.length < 2) {
             sender.sendMessage(PREFIX + ChatColor.RED + "Falsche Benutzung! /cd <Sekunden> <Grund>");
             return true;

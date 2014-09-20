@@ -21,24 +21,24 @@ import de.static_interface.sinklibrary.SinkLibrary;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
-import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
+import org.spongepowered.api.command.CommandSource;
 
 import java.lang.reflect.Method;
 import java.util.Set;
 
-public class IrcCommandSender implements CommandSender {
+public class IrcCommandSource implements CommandSource {
 
     User base;
     String source;
     volatile boolean useNotice = false;
 
-    public IrcCommandSender(User base, String source) {
+    public IrcCommandSource(User base, String source) {
         if (base == null) {
             throw new IllegalArgumentException("base may not be null");
         }
